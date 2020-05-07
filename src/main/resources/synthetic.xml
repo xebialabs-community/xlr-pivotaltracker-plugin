@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright 2020 XEBIALABS
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+-->
+<synthetic xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns="http://www.xebialabs.com/deployit/synthetic"
+           xsi:schemaLocation="http://www.xebialabs.com/deployit/synthetic synthetic.xsd">
+    
+    <type type="pivotaltracker.Server" label="Pivotal Tracker: Server" extends="configuration.HttpConnection">
+        <property name="apitoken" label="API Token" required="true" description="API Token" />
+    </type>
+
+    <type type="pivotaltracker.Task" extends="xlrelease.PythonScript" virtual="true">
+        <property name="iconLocation" default="pivotaltracker/icon.png" hidden="true"/>
+        <property name="pivotaltrackerServer" category="input" label="Server" referenced-type="pivotaltracker.Server"
+                  kind="ci"/>
+        <property name="taskColor" hidden="true" default="#356185" />
+    </type>
+
+    <type type="pivotaltracker.CreateStory" extends="pivotaltracker.Task">
+        <property name="scriptLocation" default="pivotaltracker/CreateStory.py" hidden="true"/>
+        <property name="project_id" kind="string" category="input" label="Project ID" required="true" description="The ID of the project" />
+        <property name="story_name" kind="string" category="input" label="Name" required="true" description="Name of the story" />
+        <property name="story_description" kind="string" category="input" label="Description" required="false" description="Description of the story" />
+        <property name="story_type" kind="enum" category="input" label="Type" description="Type of the story">
+            <enum-values>
+                <value>feature</value>
+                <value>bug</value>
+                <value>chore</value>
+                <value>release</value>
+            </enum-values>
+        </property>
+        <property name="current_state" kind="enum" category="input" label="Current State" description="Story's state of completion">
+            <enum-values>
+                <value>accepted</value>
+                <value>delivered</value>
+                <value>finished</value>
+                <value>started</value>
+                <value>rejected</value>
+                <value>planned</value>
+                <value>unstarted</value>
+                <value>unscheduled</value>
+            </enum-values>
+        </property>
+        <property name="labels" kind="set_of_string" category="input" label="Labels" description="Labels of the story" required="false" />
+        <property name="story" category="output" kind="map_string_string" required="false" label="Story" description="Story properties"/>
+    </type>
+
+    <type type="pivotaltracker.UpdateStory" extends="pivotaltracker.Task">
+        <property name="scriptLocation" default="pivotaltracker/UpdateStory.py" hidden="true"/>
+        <property name="project_id" kind="string" category="input" label="Project ID" required="true" description="The ID of the project" />
+        <property name="story_id" kind="string" category="input" label="Story ID" required="true" description="The ID of the story" />
+        <property name="story_name" kind="string" category="input" label="Name" required="true" description="Name of the story" />
+        <property name="story_description" kind="string" category="input" label="Description" required="false" description="Description of the story" />
+        <property name="story_type" kind="enum" category="input" label="Type" description="Type of the story">
+            <enum-values>
+                <value>feature</value>
+                <value>bug</value>
+                <value>chore</value>
+                <value>release</value>
+            </enum-values>
+        </property>
+        <property name="current_state" kind="enum" category="input" label="Current State" description="Story's state of completion">
+            <enum-values>
+                <value>accepted</value>
+                <value>delivered</value>
+                <value>finished</value>
+                <value>started</value>
+                <value>rejected</value>
+                <value>planned</value>
+                <value>unstarted</value>
+                <value>unscheduled</value>
+            </enum-values>
+        </property>
+        <property name="labels" kind="set_of_string" category="input" label="Labels" description="Labels of the story" required="false" />
+        <property name="story" category="output" kind="map_string_string" required="false" label="Story" description="Story properties"/>
+    </type>
+
+</synthetic>
