@@ -1,1 +1,12 @@
 language: java
+deploy:
+  provider: releases
+  api_key:
+    secure: MQ0m0ckrzC+g3aJQffWlwN43JDVTKG3uAvVxHdjhsLOweMqPcca5xCYl6JCtx20Sj/lnUIr2Xt5tKe8owVVVb3FsVvZXrvctNSwUzS7Esnvtsvg9ZiovH/zqJPl6x2CrOinh45/8cL5jtCbagF9suveus6EWHKMqGWWwBXJbAJtTGRsgqU7afWH4vw3/021pA50QaI97jv7aAHN6+dix1ZQRwWWBgXs14Hh+ma3qURtBmtn9mpeWEc9RAyRERnXmGl4Vs3oIo3tlkdpEEmwyQtdFazCoeRc2SZ9+Gh5XsN8116Brbk/Y7Br4v53JII70CsRlATWbeBcJM/xtKzOSOBS/VqNor4d5fGLWokGUImiRMKwKQyc1z6ieLlInEgsQ+qHHGir3THqmBTkeITv2gd04Q7IVbRFwTEDxAlj4lnT+dtuAKU1RVXJkIeP6WksQSsrYonbj12FNkYoYi8a47CcGAYk5a/XPk7o48aXf1ZA8Vj1R2ZqT/M86dYU5yRorN4UYG9wb5KTDhbeLVu7rbiZsHpmd6JN+BhFkHHclgrFg2dbyy37uzoU5+Ebobq3U4OzmhPwiP07jGtncqdX6duvE1QvjfTiWZyIjNrOhxYSbc/S4EjgoIsuYxKESn2QOCGZjZqiLPjhP222Uj619P3sDCotl+s3y4EFyc6XiH68=
+  file: "./build/libs/*"
+  file_glob: true
+  skip_cleanup: true
+  on:
+    repo: xebialabs-community/xlr-pivotaltracker-plugin
+    all_branches: true
+    tags: true
