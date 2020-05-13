@@ -9,6 +9,7 @@
 #
 
 import json
+import urllib
 from xlrelease.HttpRequest import HttpRequest
 import org.slf4j.Logger as Logger
 import org.slf4j.LoggerFactory as LoggerFactory
@@ -27,6 +28,10 @@ class Client(object):
         response = HttpRequest(self.params).get('/me', content=None, headers=self.headers)
         self.logger.info(response.response)
         return
+
+    def _getRequest(self, url):
+        response = HttpRequest(self.params).get(url, content=None, contentType=self.content_type, headers=self.headers)
+        return response
 
     def _postRequest(self, url, data):
         encoded_data = json.dumps(data).encode(self.encoding)
@@ -79,3 +84,36 @@ class Client(object):
         for (k,v) in obj.items():
             story[k] = json.dumps(v)
         return story
+
+    def getStories(self, project_id, with_label, with_story_type, with_state, after_story_id, before_story_id):
+        stories={}
+        url = '/projects/%(p)s/stories' % { 'p': project_id }
+        params = {}
+        if (with_label != None) and (with_label != '') :
+            params['with_label'] = with_label.encode(self.encoding)
+        if with_story_type != None:
+            params['with_story_type'] = with_story_type
+        if with_state != None:
+            params['with_state'] = with_state
+        if (after_story_id != None) and (after_story_id !=''):
+            params['after_story_id'] = after_story_id
+        if (before_story_id != None) and (before_story_id != ''):
+            params['before_story_id'] = before_story_id
+        url += '?%(p)s' % { 'p' : urllib.urlencode(params) }
+        response = self._getRequest(url)
+        obj = json.loads(response.response)
+        for l in obj:
+            stories[l['id']] = l['name']
+        
+        return stories
+
+
+    def getStoriesForRelease(self, project_id, release_id):
+        stories = {}
+        url = '/projects/%(p)s/releases/%(r)s/stories' % { 'p': project_id, 'r': release_id }
+        response = self._getRequest(url)
+        obj = json.loads(response.response)
+        for s in obj:
+            stories[s['id']] = s['name']
+
+        return stories

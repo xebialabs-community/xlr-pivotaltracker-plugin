@@ -33,11 +33,19 @@ Note:  XLR version should not be lower than lowest supported version.  See <http
 
 ### Create Story Task
 
-![getIncidents screenshot](images/createStory.png)
+![createStory screenshot](images/createStory.png)
 
 ### Update Story Task
 
-![getIncidents screenshot](images/updateStory.png)
+![updateStory screenshot](images/updateStory.png)
+
+### Get Stories Task
+
+![getStories screenshot](images/getStories.png)
+
+### Get Stories for Release Task
+
+![getStoriesForRelease screenshot](images/getStoriesForRelease.png)
 
 ## References
 
@@ -48,3 +56,4 @@ Note:  XLR version should not be lower than lowest supported version.  See <http
 |  Version |  Date | Description  |
 |---|---|---|
 |  0.1.0 | May 7, 2020  | Initial version (for demo purpose)  |
+|  0.2.0 | May 13, 2020  | Added 'Get Stories' and 'Get Stories for Release' tasks  |
