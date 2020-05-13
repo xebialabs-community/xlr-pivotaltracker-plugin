@@ -84,4 +84,40 @@
         <property name="story" category="output" kind="map_string_string" required="false" label="Story" description="Story properties"/>
     </type>
 
+    <type type="pivotaltracker.GetStories" extends="pivotaltracker.Task">
+        <property name="scriptLocation" default="pivotaltracker/GetStories.py" hidden="true"/>
+        <property name="project_id" kind="string" category="input" label="Project ID" required="true" description="The ID of the project" />
+        <property name="with_label" kind="string" category="input" label="Label" required="false" description="A label name which all returned stories must match" />
+        <property name="with_story_type" kind="enum" category="input" label="Type" required="false" description="A story's type which all returned stories must match">
+            <enum-values>
+                <value>feature</value>
+                <value>bug</value>
+                <value>chore</value>
+                <value>release</value>
+            </enum-values>
+        </property>
+        <property name="with_story_state" kind="enum" category="input" label="Current State" required="false" description="A story's current_state which all returned stories must match.">
+            <enum-values>
+                <value>accepted</value>
+                <value>delivered</value>
+                <value>finished</value>
+                <value>started</value>
+                <value>rejected</value>
+                <value>planned</value>
+                <value>unstarted</value>
+                <value>unscheduled</value>
+            </enum-values>
+        </property>
+        <property name="after_story_id" kind="string" category="input" label="After Story ID" required="false" description="Filters results to stories that are after the given story id"/>
+        <property name="before_story_id" kind="string" category="input" label="Before Story ID" required="false" description="Filters results to stories that are before the given story id"/>
+        <property name="stories" kind="map_string_string" category="output" label="Found stories" description="Key and Name of found stories"/>
+    </type>
+
+    <type type="pivotaltracker.GetStoriesForRelease" extends="pivotaltracker.Task">
+        <property name="scriptLocation" default="pivotaltracker/GetStoriesForRelease.py" hidden="true"/>
+        <property name="project_id" kind="string" category="input" label="Project ID" required="true" description="The ID of the project" />
+        <property name="release_id" kind="string" category="input" label="Release ID" required="true" description="The ID of the release" />
+        <property name="stories" category="output" kind="map_string_string" label="Stories" description="Key and title of releated stories"/>
+    </type>
+
 </synthetic>
