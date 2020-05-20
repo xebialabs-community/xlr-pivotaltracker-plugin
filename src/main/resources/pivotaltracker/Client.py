@@ -90,7 +90,7 @@ class Client(object):
         url = '/projects/%(p)s/stories' % { 'p': project_id }
         params = {}
         if (with_label != None) and (with_label != '') :
-            params['with_label'] = with_label.encode(self.encoding)
+            params['with_label'] = with_label.encode('utf-8')
         if with_story_type != None:
             params['with_story_type'] = with_story_type
         if with_state != None:
@@ -117,3 +117,9 @@ class Client(object):
             stories[s['id']] = s['name']
 
         return stories
+
+    def getStory(self, project_id, story_id):
+        url = '/projects/%(p)s/stories/%(s)s' % { 'p': project_id, 's': story_id }
+        response = self._getRequest(url)
+        obj = json.loads(response.response)
+        return obj

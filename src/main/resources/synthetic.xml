@@ -120,4 +120,18 @@
         <property name="stories" category="output" kind="map_string_string" label="Stories" description="Key and title of releated stories"/>
     </type>
 
+    <type type="pivotaltracker.ListOfStoriesTile" label="PivotalTracker: List of stories" extends="xlrelease.Tile" description="Display a list of stories">
+        <property name="scriptLocation" default="pivotaltracker/ListOfStoriesTile.py" hidden="true"/>
+        <property name="pivotaltrackerServer" kind="ci" referenced-type="pivotaltracker.Server" category="input" />
+        <property name="title" description="Tile title" default="PivotalTracker stories" />
+        <property name="project_id" description="Project ID" category="input" required="true" />
+        <property name="stories" category="input" description="List of stories" kind="map_string_string" />
+        <!-- Path to the HTML template of the summary view of the tile -->
+        <property name="uri" hidden="true" default="include/pivotaltracker/listOfStoriesTile/list-of-stories-summary-view.html" />
+        <!-- Path to the HTML template of the detail view of the tile -->
+        <property name="detailsUri" hidden="true" default="include/pivotaltracker/listOfStoriesTile/list-of-stories-detail-view.html" />
+        <property name="embedded" kind="boolean" hidden="true" default="true" required="false"/>
+        <property name="supportedScopes" kind="list_of_string" default="release" hidden="true"/>
+    </type>
+
 </synthetic>

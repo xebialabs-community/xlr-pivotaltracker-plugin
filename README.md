@@ -47,6 +47,12 @@ Note:  XLR version should not be lower than lowest supported version.  See <http
 
 ![getStoriesForRelease screenshot](images/getStoriesForRelease.png)
 
+### Summary for tile 'PivotalTracker: List of stories'
+![TileListOfStories screenshot](images/tileSummary.png)
+
+### Details for tile 'PivotalTracker: List of stories'
+![TileDetailsListOfStories screenshot](images/tileDetails.png)
+
 ## References
 
 * [Pivotal Tracker API](https://www.pivotaltracker.com/help/api/rest/v5#top)
@@ -57,3 +63,4 @@ Note:  XLR version should not be lower than lowest supported version.  See <http
 |---|---|---|
 |  0.1.0 | May 7, 2020  | Initial version (for demo purpose)  |
 |  0.2.0 | May 13, 2020  | Added 'Get Stories' and 'Get Stories for Release' tasks  |
+|  0.3.0 | May 20, 2020  | Added the tile 'PivotalTracker: List of stories'  |
