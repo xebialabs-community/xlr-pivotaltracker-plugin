@@ -64,3 +64,5 @@ Note:  XLR version should not be lower than lowest supported version.  See <http
 |  0.1.0 | May 7, 2020  | Initial version (for demo purpose)  |
 |  0.2.0 | May 13, 2020  | Added 'Get Stories' and 'Get Stories for Release' tasks  |
 |  0.3.0 | May 20, 2020  | Added the tile 'PivotalTracker: List of stories'  |
+|  0.4.0 | May 29, 2020  | Added support to contribute data to the Release Audit Report  |
+|  0.4.1 | May 29, 2020  | README update  |
