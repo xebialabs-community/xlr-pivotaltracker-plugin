@@ -10,5 +10,5 @@
 
 from pivotaltracker.Client import Client
 
-client = Client(pivotaltrackerServer)
+client = Client(pivotaltrackerServer, task_reporting_api = taskReportingApi, task = task)
 story = client.createStory(project_id, story_name, story_description, story_type, current_state, labels)

@@ -8,7 +8,10 @@
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 
-from pivotaltracker.Client import Client
-
-client = Client(pivotaltrackerServer, task_reporting_api = taskReportingApi, task = task)
-story = client.updateStory(project_id, story_id, story_name, story_description, story_type, current_state, labels)
+def error(text, response = None):
+    print
+    print u"Error: {0} ".format(text)
+    if response is not None:
+        response.errorDump()
+    print
+    raise Exception(text)

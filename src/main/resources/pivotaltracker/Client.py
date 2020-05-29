@@ -10,19 +10,23 @@
 
 import json
 import urllib
-from xlrelease.HttpRequest import HttpRequest
 import org.slf4j.Logger as Logger
 import org.slf4j.LoggerFactory as LoggerFactory
 
+from xlrelease.HttpRequest import HttpRequest
+from util import error
+
 class Client(object):
 
-    def __init__(self, httpConnection):
+    def __init__(self, httpConnection, task_reporting_api = None, task = None):
         self.httpConnection = httpConnection
         self.content_type = 'application/json'
         self.encoding = 'utf-8'
         self.params = {'url': httpConnection['url'], 'proxyHost': httpConnection['proxyHost'], 'proxyPort': httpConnection['proxyPort'], 'proxyUsername': httpConnection['proxyUsername'], 'proxyPassword': httpConnection['proxyPassword']}
         self.headers = {'X-TrackerToken': httpConnection['apitoken'] }
         self.logger = LoggerFactory.getLogger('com.xebialabs.pivotaltracker-plugin')
+        self.task_reporting_api = task_reporting_api
+        self.task = task
 
     def testServer(self):
         response = HttpRequest(self.params).get('/me', content=None, headers=self.headers)
@@ -43,6 +47,22 @@ class Client(object):
         response = HttpRequest(self.params).put(url, encoded_data, contentType=self.content_type, headers=self.headers)
         return response
 
+    def _createPlanRecord(self, story):
+        if self.task_reporting_api and self.task:
+            planRecord = self.task_reporting_api.newPlanRecord()
+            planRecord.targetId = self.task.id
+            planRecord.ticket = str(story['id'])
+            planRecord.title = story['name']
+            planRecord.ticketType = story['story_type']
+            planRecord.creationDate = story['created_at']
+            planRecord.updatedDate = story['updated_at']
+            planRecord.serverUrl = self.httpConnection['url']
+            planRecord.serverUser = self.httpConnection['username']
+            planRecord.ticket_url = story['url']
+            planRecord.status = story['current_state']
+            self.task_reporting_api.addRecord(planRecord, True)
+            self.logger.info('Created Plan record')
+
     def createStory(self, project_id, name, description, story_type, current_state, labels):
         story = {}
         url = '/projects/%(p)s/stories' % { 'p': project_id }
@@ -59,9 +79,13 @@ class Client(object):
             data['labels'] = [ l for l in labels ]
 
         response = self._postRequest(url, data)
-        obj = json.loads(response.response)
-        for (k,v) in obj.items():
-            story[k] = json.dumps(v)
+        if response.status == 200:
+            obj = json.loads(response.response)
+            for (k,v) in obj.items():
+                story[k] = json.dumps(v)
+            self._createPlanRecord(obj)
+        else:
+            error("Failed to create story in PivotalTracker.", response)
         return story
 
     def updateStory(self, project_id, story_id, name, description, story_type, current_state, labels):
@@ -80,9 +104,13 @@ class Client(object):
             data['labels'] = [ l for l in labels ]
 
         response = self._putRequest(url, data)
-        obj = json.loads(response.response)
-        for (k,v) in obj.items():
-            story[k] = json.dumps(v)
+        if response.status == 200:
+            obj = json.loads(response.response)
+            for (k,v) in obj.items():
+                story[k] = json.dumps(v)
+            self._createPlanRecord(obj)
+        else:
+            error("Failed to update story in PivotalTracker.", response)
         return story
 
     def getStories(self, project_id, with_label, with_story_type, with_state, after_story_id, before_story_id):
@@ -101,10 +129,12 @@ class Client(object):
             params['before_story_id'] = before_story_id
         url += '?%(p)s' % { 'p' : urllib.urlencode(params) }
         response = self._getRequest(url)
-        obj = json.loads(response.response)
-        for l in obj:
-            stories[l['id']] = l['name']
-        
+        if response.status == 200:
+            obj = json.loads(response.response)
+            for l in obj:
+                stories[l['id']] = l['name']
+        else:
+            error("Failed to get stories from PivotalTracker.", response)
         return stories
 
 
@@ -112,14 +142,20 @@ class Client(object):
         stories = {}
         url = '/projects/%(p)s/releases/%(r)s/stories' % { 'p': project_id, 'r': release_id }
         response = self._getRequest(url)
-        obj = json.loads(response.response)
-        for s in obj:
-            stories[s['id']] = s['name']
-
+        if response.status == 200:
+            obj = json.loads(response.response)
+            for s in obj:
+                stories[s['id']] = s['name']
+        else:
+            error("Failed to get stories from PivotalTracker.", response)
         return stories
 
     def getStory(self, project_id, story_id):
+        obj = None
         url = '/projects/%(p)s/stories/%(s)s' % { 'p': project_id, 's': story_id }
         response = self._getRequest(url)
-        obj = json.loads(response.response)
+        if response.status == 200:
+            obj = json.loads(response.response)
+        else:
+            error("Failed to get story from PivotalTracker.", response)
         return obj
